@@ -1,0 +1,45 @@
+import java.util.ArrayList;
+
+public class BankAccount {
+    private String username;
+    private String password;
+    private double balance;
+    private ArrayList<String> transactions;
+
+    public BankAccount(String username, String password, double initialBalance) {
+        this.username = username;
+        this.password = password;
+        this.balance = initialBalance;
+        this.transactions = new ArrayList<>();
+        transactions.add("Account created with balance: ₹" + initialBalance);
+    }
+
+    public boolean login(String user, String pass) {
+        return username.equals(user) && password.equals(pass);
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            transactions.add("Deposited: ₹" + amount);
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            transactions.add("Withdrawn: ₹" + amount);
+        } else {
+            transactions.add("Failed withdrawal attempt: ₹" + amount);
+        }
+    }
+
+    public ArrayList<String> getTransactions() {
+        return transactions;
+    }
+}
+
