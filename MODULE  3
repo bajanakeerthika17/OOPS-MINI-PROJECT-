@@ -1,0 +1,42 @@
+import java.awt.*;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+public class DisplayInventoryModule extends JFrame {
+    private ArrayList<Product> products = new ArrayList<>();
+    private DefaultTableModel tableModel;
+    private JTable table;
+
+    public DisplayInventoryModule() {
+        setTitle("Display Inventory - Inventory Management");
+        setSize(700, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        
+        products.add(new Product("P001", "Mouse", 10, 250.0));
+        products.add(new Product("P002", "Keyboard", 5, 500.0));
+        products.add(new Product("P003", "Monitor", 3, 6000.0));
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        String[] columns = {"Product ID", "Name", "Quantity", "Price"};
+        tableModel = new DefaultTableModel(columns, 0);
+        table = new JTable(tableModel);
+        refreshTable();
+
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        add(panel);
+    }
+
+    private void refreshTable() {
+        tableModel.setRowCount(0);
+        for (Product p : products) {
+            tableModel.addRow(new Object[]{p.id, p.name, p.quantity, p.price});
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DisplayInventoryModule().setVisible(true));
+    }
+}
