@@ -1,0 +1,47 @@
+import java.awt.*;
+import javax.swing.*;
+
+public class OnlineBanking extends JFrame {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+    private BankAccount account;
+    private LoginPanel loginPanel;
+    private BankingPanel bankingPanel;
+
+    public OnlineBanking(){  
+        account = new BankAccount("user123", "pass123", 5000.00);
+         setTitle("Online Banking Interface");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+
+        loginPanel = new LoginPanel(this);
+        bankingPanel = new BankingPanel(account, this);
+
+        mainPanel.add(loginPanel, "Login");
+        mainPanel.add(bankingPanel, "Banking");
+        add(mainPanel);
+
+        setVisible(true);
+    }
+
+    public BankAccount getAccount() {
+        return account;
+    }
+
+    public void showBankingPanel() {
+        bankingPanel.updateDisplay();
+        cardLayout.show(mainPanel, "Banking");
+    }
+
+    public void showLoginPanel() {
+        cardLayout.show(mainPanel, "Login");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new OnlineBanking());
+    }
+}
