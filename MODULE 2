@@ -1,0 +1,55 @@
+import java.awt.*;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+public class DeleteProductModule extends JFrame {
+    private ArrayList<Product> products = new ArrayList<>();
+    private DefaultTableModel tableModel;
+    private JTable table;
+
+    public DeleteProductModule() {
+        setTitle("Delete Product - Inventory Management");
+        setSize(700, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Sample Data
+        products.add(new Product("P001", "Mouse", 10, 250.0));
+        products.add(new Product("P002", "Keyboard", 5, 500.0));
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        String[] columns = {"Product ID", "Name", "Quantity", "Price"};
+        tableModel = new DefaultTableModel(columns, 0);
+        table = new JTable(tableModel);
+        refreshTable();
+
+        JButton btnDelete = new JButton("Delete Selected Product");
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        panel.add(btnDelete, BorderLayout.SOUTH);
+
+        add(panel);
+
+        btnDelete.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row == -1) {
+                JOptionPane.showMessageDialog(this, "Select a product to delete.");
+                return;
+            }
+            products.remove(row);
+            tableModel.removeRow(row);
+            JOptionPane.showMessageDialog(this, "Product Deleted Successfully 🗑️");
+        });
+    }
+
+    private void refreshTable() {
+        tableModel.setRowCount(0);
+        for (Product p : products) {
+            tableModel.addRow(new Object[]{p.id, p.name, p.quantity, p.price});
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new DeleteProductModule().setVisible(true));
+    }
+}
